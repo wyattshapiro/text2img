@@ -36,10 +36,11 @@ def get_api_data():
             image_url = text2image.generate_image(quote=quote, noun="pictogram", adjective=adjective)
         else:
             # Make an API call to get quote
-            if lower(category) == "actionable":
+            category = "future"
+            if category.lower() == "actionable":
                 quote = "Be the change you wish to see in the world"
                 author = "Gandhi"
-            elif lower(category) == "future":
+            elif category.lower() == "future":
                 quote = "In God we trust. All others must bring data."
                 author = "W. Edwards Deming"
             else:
@@ -47,7 +48,7 @@ def get_api_data():
                 author = None
 
             # Make an API call to generate image
-            image_url = f"http://127.0.0.1:5000/static/images/{category}_{adjective}.png"
+            image_url = f"http://127.0.0.1:5000/static/images/{category}_{adjective}.jpg"
 
         # Check if the API call was successful (status code 200)
         if quote and author and image_url:
