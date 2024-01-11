@@ -1,0 +1,11 @@
+# Mac file
+.DS_Store
+
+# virtual environments
+*.env
+venv/
+__pycache__/
+
+# data storage for chatbot
+data/
+storage/
