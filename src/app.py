@@ -37,11 +37,11 @@ def get_api_data():
         else:
             # Make an API call to get quote
             if lower(category) == "actionable":
-                quote = "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time."
-                author = "Thomas Edison"
+                quote = "Be the change you wish to see in the world"
+                author = "Gandhi"
             elif lower(category) == "future":
-                quote = "Dreams are brief madness and madness a long dream."
-                author = "Arthur Schopenhauer"
+                quote = "In God we trust. All others must bring data."
+                author = "W. Edwards Deming"
             else:
                 quote = None
                 author = None
