@@ -3,9 +3,60 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>PicturePerfect</title>
+    <title>Compelling Visuals Tool</title>
     <style>
-        /* CSS for the loading spinner */
+        body {
+            background-color: black;
+            color: white;
+            font-family: Helvetica, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background-color: #3498db;
+            display: inline-block;
+            padding: 0.5em 1em;
+            border-radius: 10px;
+            margin-bottom: 2em;
+        }
+
+        form {
+            margin-bottom: 1em;
+        }
+
+        textarea {
+            width: 300px;
+            height: 100px;
+            margin-bottom: 1em;
+        }
+
+        select {
+            margin-bottom: 1em;
+        }
+
+        #api-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #api-button:hover {
+            background-color: #2980b9;
+        }
+
         .loader {
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-top: 4px solid #3498db;
@@ -14,72 +65,70 @@
             height: 20px;
             animation: spin 2s linear infinite;
             display: none;
-            /* Initially hidden */
         }
-    
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
-    
             100% {
                 transform: rotate(360deg);
             }
         }
 
-        #quote {
-            font-style: italic;
-        }
-
         #image-display {
             width: 256px;
             height: 256px;
+            margin-top: 1em;
+        }
+
+        #quote {
+            font-style: italic;
+            margin-top: 1em;
+        }
+
+        #author {
+            margin-top: 0.5em;
         }
     </style>
 </head>
 
 <body>
-    <h1>PicturePerfect</h1>
+    <h1>Compelling Visual Tool</h1>
+    <h3>Instructions: </h3>
+      <p>Input a section of your post or content <br>
+        and this tool will pick a relevant quote </p>
+        <p> Then it will generate a compelling visual <br>
+        to accompany your post to draw people in <br>
+        and create more intrigue.</p>
     <form>
-        <textarea id="post" name="message" rows="10" cols="30">
-            Enter your post here...
-        </textarea>
-        <!-- <label for="category">Select your category:</label> -->
-        <!-- <select id="category" name="category">
-            <option value="actionable">Actionable</option>
-            <option value="analytical">Analytical</option>
-            <option value="contrarian">Contrarian</option>
-            <option value="motivational">Motivational</option>
-            <option value="observation">Observation</option>
-            <option value="future">Future</option>
-        </select> -->
-        <label for="adjective">Select your aesthetic:</label>
-        <select id="adjective" name="adjective">
-            <option value="modern">Modern</option>
-            <option value="minimal">Minimal</option>
-            <option value="creative">Creative</option>
-            <option value="simple">Simple</option>
-        </select>
-    </form>
-    <button id="api-button">Generate Image</button>
-    <div id="api-data">
-        <img id="image-display" src="">
-        <div id="quote"></div>
-        <div id="author"></div>
-        <div class="loader" id="loading-spinner"></div> <!-- Loading spinner -->
-    </div>
+    <textarea id="post" name="message" style="margin-bottom: 2em;">Enter your post here...</textarea>
+    <label for="adjective" style="display: block; margin-bottom: 1em;">Select your aesthetic:</label>
+    <select id="adjective" name="adjective" style="margin-bottom: 2em;">
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="creative">Creative</option>
+        <option value="simple">Simple</option>
+    </select>
+    <button id="api-button" type="button" style="margin-bottom: 2em;">Generate Image</button>
+</form>
+<div id="api-data">
+    <img id="image-display" src="" alt="Generated pictograph" style="margin-bottom: 2em;">
+    <div id="quote" style="margin-bottom: 2em;"></div>
+    <div id="author" style="margin-bottom: 2em;"></div>
+    <div class="loader" id="loading-spinner" style="margin-bottom: 2em;"></div>
+</div>
+
 
     <script>
         document.getElementById('api-button').addEventListener('click', function () {
             const post = document.getElementById('post').value;
-            // const category = document.getElementById('category').value;
             const adjective = document.getElementById('adjective').value;
             const quoteElement = document.getElementById('quote');
             const authorElement = document.getElementById('author');
             const imageElement = document.getElementById('image-display');
             const spinnerElement = document.getElementById('loading-spinner');
-            
-            // Hide the image and show the loading spinner
+
             imageElement.style.display = 'none';
             quoteElement.style.display = 'none';
             authorElement.style.display = 'none';
@@ -88,14 +137,11 @@
             fetch(`/api?post=${encodeURIComponent(post)}&adjective=${encodeURIComponent(adjective)}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Set the 'src' attribute of the image element to display the image
                     imageElement.src = data.image_url;
                     quoteElement.textContent = data.quote;
                     authorElement.textContent = data.author;
-                    
-                    // Wait for the image to load
+
                     imageElement.onload = function () {
-                    // Hide the loading spinner and show the image
                         spinnerElement.style.display = 'none';
                         imageElement.style.display = 'block';
                         quoteElement.style.display = 'block';
